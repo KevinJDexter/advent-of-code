@@ -15,7 +15,6 @@ const numPathsToEnd = (currentRoom: string, remainingPaths: string[], roomToRevi
       willRevisitThisRoom = true;
     } else if (canRevisitASmallRoom && roomToRevisit === currentRoom) {
       markRoomRevisited = true;
-    } else if (canRevisitASmallRoom) {
     }
     remainingPathsAfterCurrentRoom = remainingPaths.filter((path: string) => !path.split('-').includes(currentRoom));
   }
@@ -24,8 +23,6 @@ const numPathsToEnd = (currentRoom: string, remainingPaths: string[], roomToRevi
     return rooms[1-rooms.indexOf(currentRoom)];
   })
   nextRooms.forEach((room: string) => {
-    if (currentRoom === 'd') {
-    }
     numberPaths += numPathsToEnd(room, remainingPathsAfterCurrentRoom, roomToRevisit, canRevisitASmallRoom, markRoomRevisited);
     if (willRevisitThisRoom && room !== 'end') {
       numberPaths += numPathsToEnd(room, remainingPaths, currentRoom, canRevisitASmallRoom, markRoomRevisited);
