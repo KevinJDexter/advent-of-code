@@ -1,11 +1,10 @@
-const numPathsToEnd = (currentRoom: string, remainingPaths: string[], roomToRevisit: string, canRevisitASmallRoom: boolean, roomRevisited: boolean, currentPath: string) => {
+const numPathsToEnd = (currentRoom: string, remainingPaths: string[], roomToRevisit: string, canRevisitASmallRoom: boolean, roomRevisited: boolean) => {
   if (currentRoom === 'end') {
     if (roomToRevisit !== ''  && !roomRevisited) {
       return 0;
     }
     return 1;
   }
-  if (currentPath[currentPath.length - 3] === 'd') {console.log(currentPath)}
   let numberPaths = 0;
   const remainingPathsWithCurrentRoom = remainingPaths.filter((path: string) => path.split('-').includes(currentRoom));
   let remainingPathsAfterCurrentRoom = [...remainingPaths];
@@ -27,9 +26,9 @@ const numPathsToEnd = (currentRoom: string, remainingPaths: string[], roomToRevi
   nextRooms.forEach((room: string) => {
     if (currentRoom === 'd') {
     }
-    numberPaths += numPathsToEnd(room, remainingPathsAfterCurrentRoom, roomToRevisit, canRevisitASmallRoom, markRoomRevisited, currentPath + '-' + room);
+    numberPaths += numPathsToEnd(room, remainingPathsAfterCurrentRoom, roomToRevisit, canRevisitASmallRoom, markRoomRevisited);
     if (willRevisitThisRoom && room !== 'end') {
-      numberPaths += numPathsToEnd(room, remainingPaths, currentRoom, canRevisitASmallRoom, markRoomRevisited, currentPath + '-' + room)
+      numberPaths += numPathsToEnd(room, remainingPaths, currentRoom, canRevisitASmallRoom, markRoomRevisited);
     }
   });
   return numberPaths;
@@ -37,6 +36,6 @@ const numPathsToEnd = (currentRoom: string, remainingPaths: string[], roomToRevi
 
 export const Day12 = (input: string[]) => {
   console.log("Day12");
-  console.log("Paths when restricted to one visit to small rooms:", numPathsToEnd('start', input, '', false, false, 'start'));
-  console.log("Paths when restricted to two visits to small rooms:", numPathsToEnd('start', input, '', true, false, 'start'));
+  console.log("Paths when restricted to one visit to small rooms:", numPathsToEnd('start', input, '', false, false));
+  console.log("Paths when restricted to two visits to small rooms:", numPathsToEnd('start', input, '', true, false));
 }
