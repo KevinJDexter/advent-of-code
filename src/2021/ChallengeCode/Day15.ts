@@ -53,7 +53,6 @@ export const Day15 = (input: string[]) => {
         expandedPath[i][j] = 0;
       } else if (i === 0) {
         if (j === expandedInput[0].length - 1) {
-          if (expandedPath[i + 1][j] < expandedPath[i][j - 1]) {console.log("HOIT")}
           expandedPath[i][j] = Math.min(expandedPath[i][j - 1], expandedPath[i + 1][j]) + +expandedInput[i][j];
         } else {
           expandedPath[i][j] = Math.min(expandedPath[i][j - 1], expandedPath[i][j + 1], expandedPath[i + 1][j]) + +expandedInput[i][j];
