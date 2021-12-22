@@ -47,39 +47,39 @@ export const Day15 = (input: string[]) => {
   }
 
   for (let k = 0; k < 5; k++){
-  for (let i = 0; i < expandedInput.length; i++) {
-    for (let j = 0; j < expandedInput[0].length; j++) {
-      if (i === 0 && j === 0) {
-        expandedPath[i][j] = 0;
-      } else if (i === 0) {
-        if (j === expandedInput[0].length - 1) {
-          expandedPath[i][j] = Math.min(expandedPath[i][j - 1], expandedPath[i + 1][j]) + +expandedInput[i][j];
-        } else {
-          expandedPath[i][j] = Math.min(expandedPath[i][j - 1], expandedPath[i][j + 1], expandedPath[i + 1][j]) + +expandedInput[i][j];
-        }
-      } else if (j === 0) {
-        if (i === expandedInput.length - 1) {
-          expandedPath[i][j] = Math.min(expandedPath[i - 1][j], expandedPath[i][j + 1]) + +expandedInput[i][j];
-        } else {
-          expandedPath[i][j] = Math.min(expandedPath[i - 1][j], expandedPath[i + 1][j], expandedPath[i][j + 1]) + +expandedInput[i][j];
-        }
-      } else {
-        if (i === expandedInput.length - 1) {
-          if (j === expandedInput.length - 1) {
-            expandedPath[i][j] = Math.min(expandedPath[i - 1][j], expandedPath[i][j-1]) + +expandedInput[i][j];
+    for (let i = 0; i < expandedInput.length; i++) {
+      for (let j = 0; j < expandedInput[0].length; j++) {
+        if (i === 0 && j === 0) {
+          expandedPath[i][j] = 0;
+        } else if (i === 0) {
+          if (j === expandedInput[0].length - 1) {
+            expandedPath[i][j] = Math.min(expandedPath[i][j - 1], expandedPath[i + 1][j]) + +expandedInput[i][j];
           } else {
-            expandedPath[i][j] = Math.min(expandedPath[i - 1][j], expandedPath[i][j-1], expandedPath[i][j + 1]) + +expandedInput[i][j];
+            expandedPath[i][j] = Math.min(expandedPath[i][j - 1], expandedPath[i][j + 1], expandedPath[i + 1][j]) + +expandedInput[i][j];
+          }
+        } else if (j === 0) {
+          if (i === expandedInput.length - 1) {
+            expandedPath[i][j] = Math.min(expandedPath[i - 1][j], expandedPath[i][j + 1]) + +expandedInput[i][j];
+          } else {
+            expandedPath[i][j] = Math.min(expandedPath[i - 1][j], expandedPath[i + 1][j], expandedPath[i][j + 1]) + +expandedInput[i][j];
           }
         } else {
-          if (j === expandedInput.length - 1) {
-            expandedPath[i][j] = Math.min(expandedPath[i - 1][j], expandedPath[i][j-1], expandedPath[i + 1][j]) + +expandedInput[i][j];
+          if (i === expandedInput.length - 1) {
+            if (j === expandedInput.length - 1) {
+              expandedPath[i][j] = Math.min(expandedPath[i - 1][j], expandedPath[i][j-1]) + +expandedInput[i][j];
+            } else {
+              expandedPath[i][j] = Math.min(expandedPath[i - 1][j], expandedPath[i][j-1], expandedPath[i][j + 1]) + +expandedInput[i][j];
+            }
           } else {
-            expandedPath[i][j] = Math.min(expandedPath[i - 1][j], expandedPath[i][j-1], expandedPath[i + 1][j], expandedPath[i][j + 1]) + +expandedInput[i][j];
+            if (j === expandedInput.length - 1) {
+              expandedPath[i][j] = Math.min(expandedPath[i - 1][j], expandedPath[i][j-1], expandedPath[i + 1][j]) + +expandedInput[i][j];
+            } else {
+              expandedPath[i][j] = Math.min(expandedPath[i - 1][j], expandedPath[i][j-1], expandedPath[i + 1][j], expandedPath[i][j + 1]) + +expandedInput[i][j];
+            }
           }
         }
       }
     }
-  }
   }
   console.log("Lowest risk path:", path[input.length-1][input[0].length-1])
   console.log("Lowest risk expanded path:", expandedPath[expandedInput.length-1][expandedInput[0].length-1])
