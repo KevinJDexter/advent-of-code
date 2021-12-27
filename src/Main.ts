@@ -13,4 +13,4 @@ const main = (day: string, year: string) => {
   YearMethods[`Year${year}`][day](input)
 }
 
-main("Day20", "2021");
+main("Day21", "2021");
