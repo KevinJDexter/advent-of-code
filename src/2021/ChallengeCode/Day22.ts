@@ -1,6 +1,5 @@
 export const Day22 = (input: string[]) => {
   console.log("Day22");
-  const startTime = new Date();
 
   const inputCommands = input.map(command => {
     const splitCommand = command.split('=');
@@ -118,8 +117,6 @@ export const Day22 = (input: string[]) => {
       })
     }
   }
-  const endTime = new Date();
-  console.log(`Algorithm Run time: ${endTime.valueOf() - startTime.valueOf()}ms`);
   console.log("Lit cubes in initialization region:", litCubesAt20)
   console.log("Total lit cubes", litCubes)
   return
