@@ -1,6 +1,4 @@
 export const Day22 = (input: string[]) => {
-  console.log("Day22");
-
   const inputCommands = input.map(command => {
     const splitCommand = command.split('=');
     splitCommand.shift();

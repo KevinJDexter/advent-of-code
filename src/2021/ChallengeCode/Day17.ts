@@ -1,5 +1,4 @@
 export const Day17 = (input: string[]) => {
-  console.log("Day17");
   let brokenDownInput = input[0].split(' ');
   let minX = +brokenDownInput[2].substring(brokenDownInput[2].indexOf('x') + 2, brokenDownInput[2].indexOf('.'));
   let maxX = +brokenDownInput[2].substring(brokenDownInput[2].indexOf('.') + 2, brokenDownInput[2].indexOf(','));

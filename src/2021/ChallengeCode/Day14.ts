@@ -1,5 +1,4 @@
 export const Day14 = (input: string[]) => {
-  console.log("Day14");
   let polymer = input[0];
   let rules = {};
   let ruleLines = input.filter(line => line.includes('-'))

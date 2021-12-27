@@ -36,10 +36,6 @@ export const Day16 = (input: string[]) => {
 
   let i = 0;
   let totalVersionIds = 0;
-  let currentVersion = 0;
-  let currentType = 0;
-  let bitsInSubpacket = 0;
-  let subpacketsInPacket = 0;
 
   let allPackets: T_Packet[] = [];
   let packetPath: T_Packet[] = [];

@@ -1,6 +1,4 @@
 export const Day18 = (input: string[]) => {
-  console.log("Day18");
-
   let currentInputNum = input.shift();
   let completeSnailNum = currentInputNum;
   let highestMagnitude = 0;

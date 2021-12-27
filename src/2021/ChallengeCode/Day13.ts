@@ -1,5 +1,4 @@
 export const Day13 = (input: string[]) => {
-  console.log("Day13");
   const coordinatePairs = input.filter(line => line.includes(',')).map(line => line.split(',').map(coordinate => +coordinate));
   const folds = input.filter(line => !line.includes(','));
 

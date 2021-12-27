@@ -32,7 +32,6 @@ const numPathsToEnd = (currentRoom: string, remainingPaths: string[], roomToRevi
 }
 
 export const Day12 = (input: string[]) => {
-  console.log("Day12");
   console.log("Paths when restricted to one visit to small rooms:", numPathsToEnd('start', input, '', false, false));
   console.log("Paths when restricted to two visits to small rooms:", numPathsToEnd('start', input, '', true, false));
 }

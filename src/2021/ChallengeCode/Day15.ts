@@ -1,5 +1,4 @@
 export const Day15 = (input: string[]) => {
-  console.log("Day15");
   let path: number[][] = [];
   for (let i = 0; i < input.length; i++) {
     path.push([])

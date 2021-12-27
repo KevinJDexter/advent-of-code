@@ -5,7 +5,6 @@ export const Day2 = (input: string[]) => {
 
   input.forEach(line => {
     const action = line.split(' ');
-    // console.log(action);
     const direction = action[0];
     const distance = Number(action[1]);
 

@@ -1,6 +1,4 @@
 export const Day1 = (input: string[]) => {
-  // console.log(inputAsNum);
-
   let increases = 0;
   let groupIncreases = 0;
   input.map(Number).forEach((num, i, list) => {

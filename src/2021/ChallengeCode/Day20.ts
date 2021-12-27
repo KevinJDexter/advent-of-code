@@ -1,5 +1,4 @@
 export const Day20 = (input: string[]) => {
-  console.log("Day20");
   const imageEnhancementAlgorith = input.shift();
   let currentInput = [...input];
   let inputAfterTwoEnhancements = [];

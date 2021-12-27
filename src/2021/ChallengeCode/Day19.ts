@@ -1,6 +1,4 @@
 export const Day19 = (input: string[]) => {
-  console.log("Day19");
-  
   let scanners = [];
   let currentScannerArray = [];
   input.forEach(line => {

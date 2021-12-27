@@ -1,5 +1,4 @@
 export const Day21 = (input: string[]) => {
-  console.log("Day21");
   let playerOneInitialPosition = +input[0][input[0].length - 1];
   let playerTwoInitialPosition = +input[1][input[1].length - 1];
 

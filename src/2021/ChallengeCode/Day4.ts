@@ -9,6 +9,10 @@ const getWinConditions = (card: string[]) => {
       if (!i) rowWins[j] = [splitRow[j]];
       else rowWins[j] = [...rowWins[j], splitRow[j]];
     }
+    //
+    // if diagonals counted, this would doo it....
+    //
+    //
     // if (!i) {
     //   diagWins[0] = [splitRow[i]];
     //   diagWins[1] = [splitRow[4-i]];
