@@ -5,6 +5,7 @@ import * as Year2018 from './2018/ChallengeCode/DayExports'
 import * as Year2019 from './2019/ChallengeCode/DayExports'
 import * as Year2020 from './2020/ChallengeCode/DayExports'
 import * as Year2021 from './2021/ChallengeCode/DayExports'
+import * as Year2025 from './2025/ChallengeCode/DayExports'
 
 export {
   Year2015,
@@ -14,4 +15,5 @@ export {
   Year2019,
   Year2020,
   Year2021,
+  Year2025
 }
