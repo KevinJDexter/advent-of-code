@@ -1,0 +1,11 @@
+{
+  "name": "advent-of-code",
+  "private": true,
+  "scripts": {
+    "start": "ts-node src/Main.ts"
+  },
+  "devDependencies": {
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.3"
+  }
+}
