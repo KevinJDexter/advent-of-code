@@ -64,7 +64,12 @@ const runDay = (year, day, source, cb) => {
   let out = '', err = '';
   child.stdout.on('data', d => out += d);
   child.stderr.on('data', d => err += d);
-  child.on('close', code => cb({ code, out, err }));
+  child.on('close', code => {
+    // Filter out npm notice lines
+    out = out.split('\n').filter(line => !line.startsWith('npm notice')).join('\n');
+    err = err.split('\n').filter(line => !line.startsWith('npm notice')).join('\n');
+    cb({ code, out, err });
+  });
   child.on('error', e => cb({ code: -1, out, err: String(e) }));
 };
 
@@ -343,14 +348,14 @@ const showComparison = async () => {
 
 const extractTime = (output) => {
   if (!output) return null;
-  const match = output.match(/Algorithm Run time: (\\d+)ms/);
+  const match = output.match(/Algorithm Runtime: (\\d+)ms/);
   return match ? parseInt(match[1]) : null;
 };
 
 const extractNumbers = (output) => {
   if (!output) return [];
-  // Remove the "Algorithm Run time:" line before extracting numbers
-  const withoutTiming = output.replace(/Algorithm Run time: \\d+ms/g, '');
+  // Remove the "Algorithm Runtime:" line before extracting numbers
+  const withoutTiming = output.replace(/Algorithm Runtime: \\d+ms/g, '');
   const matches = withoutTiming.match(/\\d+/g) || [];
   // Filter to significant numbers (3+ digits) to ignore metadata like Day01, line numbers, etc
   return matches.map(m => parseInt(m)).filter(n => n >= 100);
