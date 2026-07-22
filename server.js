@@ -55,9 +55,10 @@ const runDay = (year, day, source, cb) => {
       process.exit(1);
     }
     const startTime = new Date();
+    console.log();
     methods[day](input);
     const endTime = new Date();
-    console.log('Algorithm Run time: ' + (endTime.valueOf() - startTime.valueOf()) + 'ms');
+    console.log('\\nAlgorithm Runtime: ' + (endTime.valueOf() - startTime.valueOf()) + 'ms');
   `;
   const child = spawn('npx', ['ts-node', '-e', script], { cwd: __dirname });
   let out = '', err = '';
@@ -98,6 +99,22 @@ const server = http.createServer((req, res) => {
     return runDay(year, day, source, result => json(res, 200, result));
   }
 
+  if (url.pathname === '/api/filesize') {
+    const year = url.searchParams.get('year') || '';
+    const day = url.searchParams.get('day') || '';
+    if (!/^\d{4}$/.test(year) || !/^Day\d{2}$/.test(day)) {
+      return json(res, 400, { error: 'bad year/day' });
+    }
+    const sizes = {};
+    ['manual', 'ai'].forEach(source => {
+      const filePath = path.join(SRC, year, FOLDERS[source], day + '.ts');
+      if (fs.existsSync(filePath)) {
+        sizes[source] = fs.statSync(filePath).size;
+      }
+    });
+    return json(res, 200, sizes);
+  }
+
   res.writeHead(404);
   res.end('Not found');
 });
@@ -130,11 +147,15 @@ const PAGE = `<!DOCTYPE html>
   .control-group select { min-width: 140px; text-align: center; }
   .consoles { display: grid; grid-template-columns: 1fr auto 1fr; gap: 20px; margin-bottom: 20px; }
   .console { display: flex; flex-direction: column; }
-  .console-header { color: #00cc00; font-weight: bold; margin-bottom: 10px; font-size: 0.9em; }
-  .console-output { background: #10101a; border: 1px solid #333340; border-radius: 6px;
+  .console-header { font-weight: bold; margin-bottom: 10px; font-size: 0.9em; }
+  .console-header.manual { color: #FF9D42; text-align: right; }
+  .console-header.ai { color: #00D4FF; text-align: left; }
+  .console-output { background: #10101a; border-radius: 6px;
                     padding: 12px; min-height: 300px; max-height: 400px; overflow-y: auto;
                     white-space: pre-wrap; font-size: 0.85em; font-family: monospace;
-                    flex: 1; }
+                    flex: 1; border: 2px solid #333340; }
+  .console:nth-child(1) .console-output { border-color: #FF9D42; }
+  .console:nth-child(3) .console-output { border-color: #00D4FF; }
   .console-buttons { display: flex; gap: 8px; margin-top: 10px; }
   .console-buttons button { flex: 1; }
   .compare-btn { display: flex; flex-direction: column; justify-content: flex-end; align-items: center; padding-bottom: 20px; gap: 15px; }
@@ -146,6 +167,8 @@ const PAGE = `<!DOCTYPE html>
   .match { color: #00cc00; }
   .mismatch { color: #ff5555; }
   .timing { color: #ffff66; }
+  .manual-color { color: #FF9D42; }
+  .ai-color { color: #00D4FF; }
   .err { color: #ff5555; }
   .no-output { color: #888; font-style: italic; }
   select { cursor: pointer; }
@@ -166,7 +189,7 @@ const PAGE = `<!DOCTYPE html>
 
 <div class="consoles">
   <div class="console">
-    <div class="console-header">Manual</div>
+    <div class="console-header manual">Manual</div>
     <div class="console-output" id="manualOutput">Select a year and day, then run.</div>
     <div class="console-buttons">
       <button id="manualBtn">Run Manual</button>
@@ -179,7 +202,7 @@ const PAGE = `<!DOCTYPE html>
   </div>
 
   <div class="console">
-    <div class="console-header">AI</div>
+    <div class="console-header ai">AI</div>
     <div class="console-output" id="aiOutput">Select a year and day, then run.</div>
     <div class="console-buttons">
       <button id="aiBtn">Run AI</button>
@@ -236,13 +259,20 @@ const runSource = async (source) => {
 
   try {
     const r = await (await fetch('/api/run?year=' + yearSel.value + '&day=' + daySel.value + '&source=' + source)).json();
+    const sizes = await (await fetch('/api/filesize?year=' + yearSel.value + '&day=' + daySel.value)).json();
     lastResults[source] = r;
+    lastResults[source].fileSize = sizes[source];
 
     output.innerHTML = '';
     let html = '';
     if (r.out) html += r.out;
     if (r.err) html += '<span class="err">\\n' + r.err + '</span>';
     if (!r.out && !r.err) html = '<span class="no-output">(no output, exit code ' + r.code + ')</span>';
+
+    // Add file size info
+    if (sizes[source]) {
+      html += '\\nFile size: ' + sizes[source] + 'B';
+    }
 
     output.innerHTML = html;
   } catch (e) {
@@ -269,6 +299,9 @@ const showComparison = async () => {
     return;
   }
 
+  // Fetch file sizes
+  const sizes = await (await fetch('/api/filesize?year=' + yearSel.value + '&day=' + daySel.value)).json();
+
   const manualOut = lastResults.manual.out || '';
   const aiOut = lastResults.ai.out || '';
   const manualTime = extractTime(lastResults.manual.out);
@@ -282,14 +315,26 @@ const showComparison = async () => {
     ? '<span class="match">✓ Match</span>'
     : '<span class="mismatch">✗ Differ</span>';
 
-  if (manualTime && aiTime) {
+  if (manualTime !== null && aiTime !== null) {
     if (manualTime === aiTime) {
       html += '<span class="timing">Same speed</span>';
     } else {
       const faster = manualTime < aiTime ? 'Manual' : 'AI';
       const diff = Math.abs(manualTime - aiTime);
-      html += '<span class="timing">' + faster + ' faster by ' + diff.toFixed(0) + 'ms</span>';
+      const colorClass = faster === 'Manual' ? 'manual-color' : 'ai-color';
+      html += '<span class="' + colorClass + '">' + faster + ' faster by ' + diff.toFixed(0) + 'ms</span>';
     }
+  }
+
+  if (sizes.manual && sizes.ai) {
+    const smaller = sizes.manual < sizes.ai ? 'Manual' : 'AI';
+    const larger = sizes.manual > sizes.ai ? 'Manual' : 'AI';
+    const diff = Math.abs(sizes.manual - sizes.ai);
+    const smallerSize = Math.min(sizes.manual, sizes.ai);
+    const largerSize = Math.max(sizes.manual, sizes.ai);
+    const percentage = (smallerSize / largerSize * 100).toFixed(0);
+    const colorClass = smaller === 'Manual' ? 'manual-color' : 'ai-color';
+    html += '<span class="' + colorClass + '">' + smaller + ' is ' + percentage + '% the size of ' + larger + '<br>(' + diff + 'B difference)</span>';
   }
 
   comparisonResult.innerHTML = html;
