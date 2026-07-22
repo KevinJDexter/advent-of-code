@@ -1,6 +1,4 @@
 export const Day01 = (input: string[]) => {
-  console.log("Day1");
-
   let value = 50;
   let zeroCount = 0;
   let passCount = 0;

@@ -1,6 +1,4 @@
 export const Day02 = (input: string[]) => {
-  console.log("Day2");
-
   const line = (input[0] || '').trim();
   if (!line) {
     console.log(`Sum of Invalid IDs: 0`);

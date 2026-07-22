@@ -1,5 +1,4 @@
 export const Day01 = (input: string[]) => {
-  console.log("Day1");
   let dialPosition = 50;
   let result = 0;
   let round2Result = 0;
