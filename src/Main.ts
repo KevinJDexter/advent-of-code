@@ -12,7 +12,7 @@ const main = (day: string, year: string, isAi?: boolean) => {
   // console.log(inputFile)
   // console.log(input);
   const startTime = new Date();
-  YearMethods[`Year${year}`][day](input)
+  YearMethods[`Year${year}${isAi ? 'AI' : ''}`][day](input)
   const endTime = new Date();
   console.log(`Algorithm Run time: ${endTime.valueOf() - startTime.valueOf()}ms`);
 }
