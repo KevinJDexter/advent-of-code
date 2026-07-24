@@ -2,6 +2,7 @@ export const Day05 = (input: string[]): void => {
   const ranges: [number, number][] = [];
   const ingredients: number[] = [];
 
+  // Classify each line: ranges contain a '-', standalone ingredients do not
   for (const rawLine of input) {
     const line: string = rawLine.trim();
     if (line === '') continue;
@@ -14,6 +15,7 @@ export const Day05 = (input: string[]): void => {
     }
   }
 
+  // Sort ranges by start value, then merge overlapping ranges for fast lookup
   ranges.sort((a, b) => a[0] - b[0]);
   const mergedRanges: [number, number][] = [];
   for (const [start, end] of ranges) {
@@ -25,6 +27,7 @@ export const Day05 = (input: string[]): void => {
     }
   }
 
+  // Binary search to check if a number falls in any merged range
   const isFresh = (num: number): boolean => {
     let low: number = 0;
     let high: number = mergedRanges.length - 1;
@@ -42,11 +45,14 @@ export const Day05 = (input: string[]): void => {
     return false;
   };
 
+  // Count how many ingredients fall in at least one range (each counted once)
   let freshCount: number = 0;
   for (const num of ingredients) {
     if (isFresh(num)) freshCount++;
   }
 
+  // Count total fresh ingredients represented by the ranges (union of ranges).
+  // Merged ranges are non-overlapping, so summing each span gives the union size.
   let totalFresh: number = 0;
   for (const [start, end] of mergedRanges) {
     totalFresh += end - start + 1;

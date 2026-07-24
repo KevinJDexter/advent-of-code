@@ -3,6 +3,7 @@ export const Day03 = (input: string[]) => {
   let total12Digit = 0;
 
   for (const bank of input) {
+    // Find largest 2-digit number (joltage value)
     let maxNumber = 0;
     for (let i = 0; i < bank.length - 1; i++) {
       for (let j = i + 1; j < bank.length; j++) {
@@ -12,6 +13,7 @@ export const Day03 = (input: string[]) => {
     }
     totalJoltage += maxNumber;
 
+    // Find largest 12-digit number (greedy approach: pick largest digit at each step)
     if (bank.length >= 12) {
       let largest12Digit = '';
       let currentPos = 0;
