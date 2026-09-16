@@ -8,3 +8,4 @@ export * from './Day06';
 export * from './Day07';
 export * from './Day08';
 export * from './Day09';
+export * from './Day10';
